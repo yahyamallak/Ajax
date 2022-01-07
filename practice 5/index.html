@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Football players</title>
+  </head>
+  <body>
+    <div>
+      Player name :
+      <input type="text" id="p_name" name="p_name" onkeyup="getInfo()" />
+    </div>
+    <div>
+      <p style="color: red">Information :</p>
+      <p id="info">Sorry, No information available.</p>
+    </div>
+
+    <script>
+      let name = document.getElementById("p_name");
+
+      function getInfo() {
+        const xhr = new XMLHttpRequest();
+
+        xhr.onreadystatechange = function () {
+          if (this.readyState == 4 && this.status == 200) {
+            let data = this.responseText;
+            let content;
+            data = JSON.parse(data);
+
+            content =
+              "<ul><li> Player Name : " +
+              data.name +
+              "</li><li> Player Age : " +
+              data.age +
+              "</li><li> Player Club : " +
+              data.club +
+              "</li></ul>";
+
+            document.getElementById("info").innerHTML = content;
+          }
+        };
+
+        xhr.open("GET", "main.php?name=" + name.value, true);
+        xhr.send();
+      }
+    </script>
+  </body>
+</html>
